@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>成绩</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <fieldset class="table-search-fieldset">
+            <div style="margin: 10px 10px 10px 10px">
+                <!--<button class="layui-btn" onclick="stu_add('添加','/teacher/grade_add','600','500')"><i-->
+                        <!--class="layui-icon">&#xe608;</i>添加记录-->
+                <!--</button>-->
+                <!--<span th:text="'共有数据:'+${pages.totalElements}+'条'" class="x-right" style="line-height:40px;float: right">共有数据：88 条</span>-->
+            </div>
+        </fieldset>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
+            </div>
+        </script>
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter">
+        </table>
+        <table class="layui-table">
+            <thead>
+            <tr>
+
+                <th>
+                    ID
+                </th>
+                <th>
+                    实验名字
+                </th>
+                <th>
+                    学生姓名
+                </th>
+                <th>
+                    成绩
+                </th>
+                <th>
+                    创建时间
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${session.user_stu}!=null" th:each="grade : ${gs}">
+                <td th:text="${grade.getId()}"></td>
+                <td>
+                    <u th:text="${grade.getName()}"  style="cursor:pointer">
+                        小明
+                    </u>
+                </td>
+                <td th:text="${session.user_stu.getNickname()}">
+                    昵称
+                </td>
+                <td th:text="${grade.getScore()}">
+                    男
+                </td>
+                <td th:text="${#dates.format(grade.getCreateTime(), 'yyyy-MM-dd HH:MM')}">
+                    2017-01-01 11:11:42
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <p th:text="你可能还没有参与实验" th:if="${#arrays.length(gs)}==0"></p>
+
+
+    </div>
+</div>
+<script src="/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="/js/my.js" charset="utf-8"></script>
+<script th:inline="javascript">
+    layui.use(['form', 'laypage', 'layer'], function () {
+        $ = layui.jquery,
+            form = layui.form,
+            laypage = layui.laypage
+        // 监听搜索操作
+
+    });
+</script>
+<script>
+
+    function stu_add(title, url, w, h) {
+        my_show(title, url, w, h);
+    }
+
+    function grade_edit(title, url, w, h) {
+        my_show(title, url, w, h);
+    }
+
+    function grade_del(obj, id) {
+        layer.confirm('确认要删除吗？', function (index) {
+            //发异步删除数据
+
+            $.ajax({
+                url: "/teacher/grade_del",
+                type: "post",
+                // contentType: 'application/json',
+                // dataType:"json",
+                data: {
+                    id: id
+                },
+                success: function (data) {
+
+                    if (data.code == 200) {
+
+                        layer.msg('已删除!', {icon: 1, time: 1000});
+                        window.parent.location.reload();
+                    } else {
+                        layer.msg(data.message, {icon: 1, time: 1000});
+                    }
+                },
+                error: function (data) {
+                    console.log("1111111111111");
+
+                }
+            });
+
+        });
+    }
+
+</script>
+</body>
+</html>

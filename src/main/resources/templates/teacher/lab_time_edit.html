@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>老师信息修改</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<form style="margin-top: 80px" id="form1" action="">
+    <div class="layui-form layuimini-form">
+
+
+        <fieldset style="margin-left: 25%; width: 500px" class="table-search-fieldset">
+
+            <h1>请选择时间：</h1>
+            <input name="time" style="margin-top: 25px" type="text" class="layui-input" id="test">
+
+            <div class="layui-form-item">
+                <div style="margin-top: 25px;margin-left: 40%;" class="layui-input-block">
+                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">修改</button>
+                </div>
+            </div>
+        </fieldset>
+
+
+    </div>
+</form>
+<script src="/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form','laydate'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$,
+            laydate = layui.laydate;
+
+        laydate.render({
+            elem: '#test'
+            ,type: 'datetime'
+            ,range: true //或 range: '~' 来自定义分割字符
+        });
+
+
+        // var time = $("#test").value;
+        // var startTime = time.split(" - ")[0];
+        // var endTime = time.split(" - ")[1];
+
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+
+            data = data.field;
+
+            console.log(data.time);
+            var startTime = data.time.split(" - ")[0];
+            var endTime = data.time.split(" - ")[1];
+            if (startTime == '' || endTime=='') {
+
+                layer.msg("时间选择错误！");
+                return false;
+            }
+            var h_data = new FormData();
+            h_data.append("startTime", startTime);
+            h_data.append("endTime", endTime);
+
+            console.log(startTime);
+            console.log(endTime);
+            $.ajax({
+                url: "/teacher/lab_time_edit",
+                type: "post",
+                // contentType: 'application/json',
+                // dataType:"json",
+                data: {
+                    startTime: startTime,
+                    endTime: endTime
+                },
+                success: function (data) {
+
+                    if (data.code == 200) {
+
+                        layer.msg("修改成功！", function () {
+                            window.parent.location.reload()
+                        })
+                    }else{
+                        layer.msg(data.message, function () {
+
+                        })
+                    }
+                    console.log(data);
+                },
+                error: function (data) {
+                    console.log("1111111111111");
+                }
+            });
+
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>学生-注册</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/studentLogin.css">
+</head>
+<body>
+<div id="container">
+    <div></div>
+    <div class="admin-login-background">
+        <div class="admin-header">
+            <span>学生注册</span>
+        </div>
+        <form id="form1" class="layui-form" action="">
+            <div>
+                <i class="layui-icon layui-icon-username admin-icon"></i>
+                <input lay-verify="username" type="text" name="username" placeholder="请输入用户名" autocomplete="off" class="layui-input admin-input admin-input-username" required>
+            </div>
+            <div>
+                <i class="layui-icon layui-icon-username admin-icon"></i>
+                <input lay-verify="nickname" type="text" name="nickname" placeholder="请输入姓名" autocomplete="off" class="layui-input admin-input" required>
+            </div>
+            <div>
+                <i class="layui-icon layui-icon-password admin-icon"></i>
+                <input id="pass" lay-verify="password" type="password" name="password" placeholder="请输入密码" autocomplete="off" class="layui-input admin-input" required>
+            </div>
+            <div>
+                <i class="layui-icon layui-icon-password admin-icon"></i>
+                <input lay-verify="repassword" type="password" name="repassword" placeholder="请再次输入密码" autocomplete="off" class="admin-input-verify layui-input admin-input" required>
+            </div>
+            <div>
+                <div style="display: inline-block;margin-left: 70px;">
+                    男&nbsp;<input type="radio" name="sex" value="男" checked>
+                </div>
+                <div style="display: inline-block;margin-left: 50px;">
+                    女&nbsp;<input type="radio" name="sex" value="女">
+                </div>
+            </div>
+            <button class="layui-btn admin-button" lay-submit="" lay-filter="register">注 册</button>
+        </form>
+
+        <p style="margin-top:50px;color:#000;text-align: center;">已有帐号？<a style="color: #ff0000" href="/student/login">去登录</a></p>
+    </div>
+</div>
+<script src="/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form,
+            layer = layui.layer;
+        $ = layui.jquery;//jquery
+
+        // 登录过期的时候，跳出ifram框架
+        if (top.location != self.location) top.location = self.location;
+
+        // 进行登录操作
+        form.verify({
+            password: [/(.+){6,12}$/, '密码必须6到12位']
+            ,
+            repassword: function (value) {
+                if ($('#pass').val() != value) {
+                    return '两次密码不一致';
+                }
+            },
+            username: [/^[a-zA-Z0-9_-]{4,16}$/, '用户名必须4到16位（字母，数字，下划线，减号）'],
+        });
+        form.on('submit(register)', function (data) {
+            data = data.field;
+            if (data.username == '') {
+                layer.msg('用户名不能为空');
+                return false;
+            }
+            if (data.password == '') {
+                layer.msg('密码不能为空');
+                return false;
+            }
+            if (data.nickname == '') {
+                layer.msg('姓名不能为空');
+                return false;
+            }
+
+            $.ajax({
+                url: "/student/register",
+                type: "post",
+                // contentType: 'application/json',
+                // dataType:"json",
+                data: $("#form1").serialize(),
+                success: function (data) {
+
+                    if (data.code == 200) {
+
+                        layer.msg("注册成功！", function () {
+                        })
+                    }else{
+                        layer.msg(data.message, function () {
+
+                        })
+                    }
+                    console.log(data);
+                },
+                error: function (data) {
+                    console.log("1111111111111");
+                }
+            });
+
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

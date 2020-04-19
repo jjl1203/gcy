@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <title>老师信息修改</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="/css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+            width: 750px;
+            height: 350px;
+
+        }
+        .layui-container{
+            width: 700px;
+            margin-left: 50%;
+            margin-top: 180px;
+        }
+        .fontcolor{
+            color: #1E9FFF;
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+<form style="margin-top: 80px" id="form1" action="">
+    <div class="layui-container">
+        <div style="cursor: pointer;left: 30%;top: 55%;height: 106px;display: inline-block;margin-left: 10px;" class="admin-login-background">
+            <div class="layui-form login-form">
+                <form class="layui-form">
+                    <div class="layui-form-item logo-title">
+                        <h1 class="fontcolor">开始时间</h1>
+                        <h2 th:text="${lab.getStartTime()}" th:each="lab : ${labs}" class="fontcolor">1587287057848</h2>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div style="cursor: pointer;height: 106px;display: inline-block;margin-left: 40px;" class="admin-login-background">
+            <div class="layui-form login-form">
+                <form class="layui-form" action="">
+                    <div class="layui-form-item logo-title">
+                        <h1 class="fontcolor">结束时间</h1>
+                        <h2 th:text="${lab.getEndTime()}" th:each="lab : ${labs}" class="fontcolor">1587287057848</h2>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</form>
+<script src="/lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$;
+
+
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+
+            data = data.field;
+
+
+            if (data.nickname == '') {
+                layer.msg('姓名不能为空');
+                return false;
+            }
+
+            $.ajax({
+                url: "/teacher/teacher_edit",
+                type: "post",
+                // contentType: 'application/json',
+                // dataType:"json",
+                data: $("#form1").serialize(),
+                success: function (data) {
+
+                    if (data.code == 200) {
+
+                        layer.msg("修改成功！", function () {
+                            window.parent.location.reload()
+                        })
+                    }else{
+                        layer.msg(data.message, function () {
+
+                        })
+                    }
+                    console.log(data);
+                },
+                error: function (data) {
+                    console.log("1111111111111");
+                }
+            });
+
+            return false;
+        });
+
+    });
+</script>
+</body>
+</html>

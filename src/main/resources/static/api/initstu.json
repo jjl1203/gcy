@@ -1,0 +1,39 @@
+{
+  "homeInfo": {
+    "title": "成绩查询",
+    "href": "/student/grade"
+  },
+  "logoInfo": {
+    "title": "LAYUI MINI",
+    "image": "/images/logo.png",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "成绩查询",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "成绩查询",
+          "href": "/student/grade",
+          "icon": "fa fa-window-maximize",
+          "target": "_self"
+        },
+        {
+          "title": "错误列表",
+          "href": "",
+          "icon": "fa fa-window-maximize",
+          "target": "_self"
+        },
+        {
+          "title": "开始实验",
+          "href": "/student/lab_start",
+          "icon": "fa fa-window-maximize",
+          "target": "_self"
+        }
+      ]
+    }
+  ]
+}

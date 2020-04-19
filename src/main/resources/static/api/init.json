@@ -1,0 +1,61 @@
+{
+  "homeInfo": {
+    "title": "学生管理",
+    "href": "/teacher/studentList"
+  },
+  "logoInfo": {
+    "title": "LAYUI MINI",
+    "image": "/images/logo.png",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "后台管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "学生管理",
+          "href": "",
+          "icon": "fa fa-home",
+          "target": "_self",
+          "child": [
+            {
+              "title": "学生列表",
+              "href": "/teacher/studentList",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "成绩管理",
+          "href": "/teacher/grade",
+          "icon": "fa fa-window-maximize",
+          "target": "_self"
+        },
+        {
+          "title": "实验管理",
+          "href": "",
+          "icon": "fa fa-window-maximize",
+          "target": "_self",
+          "child": [
+            {
+              "title": "当前实验时间",
+              "href": "/teacher/lab_time",
+              "icon": "",
+              "target": "_self"
+            },
+            {
+              "title": "修改实验时间",
+              "href": "/teacher/lab_time_edit",
+              "icon": "",
+              "target": "_self"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
